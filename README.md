@@ -1,4 +1,4 @@
-# pyPeerNGA
+# PyPeerNGA
 
 A python tool to download ground motion from PEER NGA database.
 
