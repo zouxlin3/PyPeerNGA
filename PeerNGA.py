@@ -1,20 +1,18 @@
 import os
-import zipfile
-from selenium import webdriver
+from seleniumwire import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
+from Basic import unZip, downloader
 
 
 class PeerNGA:
-    def __init__(self, saveDir):
+    def __init__(self):
         options = webdriver.ChromeOptions()
-        prefs = {'profile.default_content_settings.popups': 0, 'download.default_directory': saveDir}
-        options.add_experimental_option('prefs', prefs)
         options.add_argument('--incognito')
 
         self.browser = webdriver.Chrome(chrome_options=options)
+        self.browser.request_interceptor = self.__interceptor
 
-        self.saveDir = saveDir
         self.states = {
             "sign in": False,
             'enter database': False,
@@ -86,18 +84,24 @@ class PeerNGA:
         self.__clickBtnSearch()
 
     @__checkStates(3)
-    def download(self):
-        saveDir = self.saveDir
+    def download(self, saveDir):
         self.browser.execute_script('getSelectedResult(true)')
         alert = self.browser.switch_to.alert
         alert.accept()
         alert = self.browser.switch_to.alert
         alert.accept()
 
-        zipName = WebDriverWait(self.browser, 10).until(lambda x: self.__findZip(saveDir))
-        zipPath = os.path.join(saveDir, zipName)
-        self.__unZip(zipPath, saveDir)
-        os.remove(zipPath)
+        reqDownload = WebDriverWait(self.browser, 10).until(lambda x: self.__interceptor(x.requests[-1]))
+        url = reqDownload.url
+        headers = reqDownload.headers
+        params = reqDownload.params
+        saveName = 'download.zip'
+        savePath = downloader(url, saveName, saveDir, headers, params)
+
+        unZip(savePath, saveDir)
+        for f in os.listdir(saveDir):
+            if f.endswith('.zip') or f.endswith('.csv'):
+                os.remove(os.path.join(saveDir, f))
 
     def __clickBtnSearch(self):
         self.browser.execute_script('OnSubmit()')
@@ -128,20 +132,8 @@ class PeerNGA:
         return False
 
     @staticmethod
-    def __findZip(diR):
-        for f in os.listdir(diR):
-            if f[-3:] == 'zip':
-                return f
+    def __interceptor(request):
+        if request.url.endswith('.zip'):
+            request.abort()
+            return request
         return False
-
-    @staticmethod
-    def __unZip(zipPath, exDir):
-        zip_file = zipfile.ZipFile(zipPath)
-        zip_list = zip_file.namelist()
-        for f in zip_list:
-            zip_file.extract(f, exDir)
-        zip_file.close()
-
-        for f in os.listdir(exDir):
-            if f[-3:] == 'csv':
-                os.remove(os.path.join(exDir, f))
