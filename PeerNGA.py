@@ -69,19 +69,17 @@ class PeerNGA:
 
     @__checkStates(2)
     def search(self, settings=None):
-        self.states['search records'] = True
-
         if not settings:
             self.__clickBtnSearch()
-            return None
+        else:
+            for label in settings:
+                elemName = self.__getElemName(label)
+                if elemName:
+                    inputElem = self.browser.find_element(By.NAME, elemName)
+                    inputElem.send_keys(settings[label])
 
-        for label in settings:
-            elemName = self.__getElemName(label)
-            if elemName:
-                inputElem = self.browser.find_element(By.NAME, elemName)
-                inputElem.send_keys(settings[label])
-
-        self.__clickBtnSearch()
+        if self.__clickBtnSearch():
+            self.states['search records'] = True
 
     @__checkStates(3)
     def download(self, saveDir):
@@ -109,6 +107,9 @@ class PeerNGA:
         divNotice = WebDriverWait(self.browser, 10).until(lambda x: x.find_element(By.ID, 'notice'))
         notice = divNotice.text
         print(notice)
+        if ' NO ' in notice or ' exceed ' in notice:
+            return False
+        return True
 
     @staticmethod
     def __getElemName(label):
