@@ -18,10 +18,7 @@
 
 2. 下载浏览器驱动 [Chrome driver](https://chromedriver.chromium.org/downloads) 
 
-   下载后解压
-
-   - MacOS/Linux: 复制到 `/usr/bin` 或 `/usr/local/bin`
-   - Windows: 复制到你的Python路径里的 `Scripts` 目录中，且将Chrome的安装路径添加到PATH环境变量
+   解压后复制到你的项目目录下。
 
 查阅[官方文档](https://pypi.org/project/selenium/)获取详细信息。
 

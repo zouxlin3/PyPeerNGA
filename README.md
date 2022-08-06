@@ -18,10 +18,7 @@ Make sure that you have installed Chrome.
 
 2. Download [Chrome driver](https://chromedriver.chromium.org/downloads) 
 
-   Make sure it's in your PATH.
-
-   - MacOS/Linux: Copy to `/usr/bin` or `/usr/local/bin`
-   - Windows: Copy to `Scripts` folder of your Python path and add the path where the Chrome is installed to PATH environment variable
+   Copy to your project directory.
 
 Go to the document of [selenium](https://pypi.org/project/selenium/) for more details.
 
