@@ -2,13 +2,13 @@
 
 [![PyPeerNGA](https://img.shields.io/badge/PyPeerNGA-IEM-brightgreen)](https://github.com/zouxlin3/PyPeerNGA)
 
-A Python tool to download ground motion from PEER NGA database.
+一个能自动从PEER NGA数据库中下载地震动的Python工具。
 
-## Install
+## 安装
 
-Make sure that you have installed Chrome.
+确保你已经安装了Chrome浏览器。
 
-1. Install Python package
+1. 安装Python依赖
 
     ```shell
     $ pip install selenium
@@ -16,18 +16,18 @@ Make sure that you have installed Chrome.
     $ pip install requests
     ```
 
-2. Download [Chrome driver](https://chromedriver.chromium.org/downloads) 
+2. 下载浏览器驱动 [Chrome driver](https://chromedriver.chromium.org/downloads) 
 
-   Make sure it's in your PATH.
+   下载后解压
 
-   - MacOS/Linux: Copy to `/usr/bin` or `/usr/local/bin`
-   - Windows: Copy to `Scripts` folder of your Python path and add the path where the Chrome is installed to PATH environment variable
+   - MacOS/Linux: 复制到 `/usr/bin` 或 `/usr/local/bin`
+   - Windows: 复制到你的Python路径里的 `Scripts` 目录中，且将Chrome的安装路径添加到PATH环境变量
 
-Go to the document of [selenium](https://pypi.org/project/selenium/) for more details.
+查阅[官方文档](https://pypi.org/project/selenium/)获取详细信息。
 
-## Usage
+## 使用说明
 
-### Sign in
+### 登录
 
 ![](https://pic.zouxlin3.com/pic/blog/PyPeerNGA/1.png)
 
@@ -36,17 +36,17 @@ web = PeerNGA()
 web.signIn('your_email', 'ypur_password')
 ```
 
-### Enter a database
+### 选择数据库
 
 ![](https://pic.zouxlin3.com/pic/blog/PyPeerNGA/2.png)
 
-Options: 'NGA West2', 'NGA East'
+可选项: 'NGA West2', 'NGA East'
 
 ```python
 web.enterDB('NGA West2')
 ```
 
-### Search records
+### 搜索记录
 
 ![](https://pic.zouxlin3.com/pic/blog/PyPeerNGA/3.png)
 
@@ -66,7 +66,7 @@ settings = {
 }
 ```
 
-Fault Type options:
+Fault Type 可选项:
 
     1 - All Types(Default)
     2 - Strike Slip (SS)
@@ -76,7 +76,7 @@ Fault Type options:
     6 - SS+Reverse
     7 - Normal+Reverse
 
-Pulse options:
+Pulse 可选项:
 
     1 - Any Record(Default)
     2 - ONLY Pulse-like Records
@@ -86,13 +86,13 @@ Pulse options:
 web.search(settings=settings)
 ```
 
-### Download records
+### 下载记录
 
 ```python
 web.download(saveDir)
 ```
 
-## Example
+## 示例
 
 ```python
 import os
@@ -113,7 +113,7 @@ if __name__ == '__main__':
     web.close()
 ```
 
-## References
+## 参考资料
 
 > [python实现下载进度条格式化输出](https://blog.csdn.net/weixin_44001521/article/details/107732555)
 
@@ -123,6 +123,6 @@ if __name__ == '__main__':
 
 > [selenium](https://pypi.org/project/selenium/)
 
-## License
+## 使用许可
 
 [MIT](https://github.com/zouxlin3/PyPeerNGA/blob/master/license) © [zouxlin3](https://zouxlin3.com)
