@@ -16,9 +16,7 @@ Make sure that you have installed Chrome.
     $ pip install requests
     ```
 
-2. Download [Chrome driver](https://chromedriver.chromium.org/downloads) 
-
-   Copy to your project directory.
+2. Download [Chrome driver](https://chromedriver.chromium.org/downloads)
 
 Go to the document of [selenium](https://pypi.org/project/selenium/) for more details.
 
@@ -29,7 +27,8 @@ Go to the document of [selenium](https://pypi.org/project/selenium/) for more de
 ![](https://pic.zouxlin3.com/pic/blog/PyPeerNGA/1.png)
 
 ```python
-web = PeerNGA()
+driverPath = 'your chrome driver path'
+web = PeerNGA(driverPath)
 web.signIn('your_email', 'ypur_password')
 ```
 

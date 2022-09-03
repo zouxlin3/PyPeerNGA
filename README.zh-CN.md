@@ -16,9 +16,7 @@
     $ pip install requests
     ```
 
-2. 下载浏览器驱动 [Chrome driver](https://chromedriver.chromium.org/downloads) 
-
-   解压后复制到你的项目目录下。
+2. 下载浏览器驱动 [Chrome driver](https://chromedriver.chromium.org/downloads)
 
 查阅[官方文档](https://pypi.org/project/selenium/)获取详细信息。
 
@@ -29,7 +27,8 @@
 ![](https://pic.zouxlin3.com/pic/blog/PyPeerNGA/1.png)
 
 ```python
-web = PeerNGA()
+driverPath = 'your chrome driver path'
+web = PeerNGA(driverPath)
 web.signIn('your_email', 'ypur_password')
 ```
 
