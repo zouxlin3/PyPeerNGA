@@ -6,11 +6,11 @@ from Basic import unZip, downloader
 
 
 class PeerNGA:
-    def __init__(self):
+    def __init__(self, driverPath):
         options = webdriver.ChromeOptions()
         options.add_argument('--incognito')
 
-        self.browser = webdriver.Chrome(chrome_options=options)
+        self.browser = webdriver.Chrome(driverPath, chrome_options=options)
         self.browser.request_interceptor = self.__interceptor
 
         self.states = {
