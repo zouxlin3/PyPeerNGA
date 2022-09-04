@@ -1,16 +1,18 @@
 import os
 import zipfile
 import requests
+from typing import NoReturn
 
 
-def unZip(zipPath, exDir):
+def unZip(zipPath: str, exDir: str) -> NoReturn:
     zip_file = zipfile.ZipFile(zipPath)
     zip_list = zip_file.namelist()
     for f in zip_list:
         zip_file.extract(f, exDir)
     zip_file.close()
 
-def downloader(url, saveName, saveDir=os.getcwd(), headers=None, params=None, ):
+
+def downloader(url: str, saveName: str, saveDir: str = os.getcwd(), headers: dict = None, params: dict = None) -> str:
     res = requests.get(url, stream=True, params=params, headers=headers)
     savePath = os.path.join(saveDir, saveName)
     total_size = int(res.headers['Content-Length'])

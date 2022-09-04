@@ -1,12 +1,14 @@
 import os
 from seleniumwire import webdriver
+from seleniumwire.request import Request
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
-from Basic import unZip, downloader
+from IO import unZip, downloader
+from typing import NoReturn
 
 
 class PeerNGA:
-    def __init__(self, driverPath):
+    def __init__(self, driverPath: str) -> NoReturn:
         options = webdriver.ChromeOptions()
         options.add_argument('--incognito')
 
@@ -19,7 +21,7 @@ class PeerNGA:
             'search records': False
         }
 
-    def signIn(self, email, password):
+    def signIn(self, email: str, password: str) -> NoReturn:
         self.browser.get('https://ngawest2.berkeley.edu/users/sign_in?unauthenticated=true')
 
         inputEmail = self.browser.find_element(By.NAME, 'user[email]')
@@ -37,11 +39,11 @@ class PeerNGA:
             print('Signed in successfully.')
             self.states['sign in'] = True
 
-    def close(self):
+    def close(self) -> NoReturn:
         self.browser.quit()
 
     @staticmethod
-    def __checkStates(level):
+    def __checkStates(level: int):
         def decorator(func):
             def check(self, *args, **kwargs):
                 stateNames = list(self.states.keys())
@@ -57,7 +59,7 @@ class PeerNGA:
         return decorator
 
     @__checkStates(1)
-    def enterDB(self, label):
+    def enterDB(self, label: str):
         DBdict = {
             'NGA West2': 1,
             'NGA east': 2
@@ -68,7 +70,7 @@ class PeerNGA:
         self.states['enter database'] = True
 
     @__checkStates(2)
-    def search(self, settings=None):
+    def search(self, settings: dict = None):
         if not settings:
             self.__clickBtnSearch()
         else:
@@ -82,7 +84,7 @@ class PeerNGA:
             self.states['search records'] = True
 
     @__checkStates(3)
-    def download(self, saveDir):
+    def download(self, saveDir: str):
         self.browser.execute_script('getSelectedResult(true)')
         alert = self.browser.switch_to.alert
         alert.accept()
@@ -101,7 +103,7 @@ class PeerNGA:
             if f.endswith('.zip') or f.endswith('.csv'):
                 os.remove(os.path.join(saveDir, f))
 
-    def __clickBtnSearch(self):
+    def __clickBtnSearch(self) -> bool:
         self.browser.execute_script('OnSubmit()')
 
         divNotice = WebDriverWait(self.browser, 10).until(lambda x: x.find_element(By.ID, 'notice'))
@@ -112,7 +114,7 @@ class PeerNGA:
         return True
 
     @staticmethod
-    def __getElemName(label):
+    def __getElemName(label: str) -> str | bool:
         nameDict = {
             'RSNs': 'search[search_nga_number]',
             'Event Name': 'search[search_eq_name]',
@@ -133,7 +135,7 @@ class PeerNGA:
         return False
 
     @staticmethod
-    def __interceptor(request):
+    def __interceptor(request: Request) -> Request | bool:
         if request.url.endswith('.zip'):
             request.abort()
             return request
