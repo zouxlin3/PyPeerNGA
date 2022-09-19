@@ -30,4 +30,5 @@ def downloader(url: str, saveName: str, saveDir: str = os.getcwd(), headers: dic
             bar = '█' * num_bar
             blank = '_' * num_blank
             print('\rDownloading ... |{0}{1}| {2}%'.format(bar, blank, int(portion * 100)), end='')
+    print('\n')
     return savePath
