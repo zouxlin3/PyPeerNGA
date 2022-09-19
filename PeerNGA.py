@@ -7,6 +7,22 @@ from IO import unZip, downloader
 from typing import NoReturn
 
 
+def _checkStates(level: int):
+    def decorator(func):
+        def check(self, *args, **kwargs):
+            stateNames = list(self.states.keys())
+            for i in range(level):
+                stateName = stateNames[i]
+                if not self.states[stateName]:
+                    print('Please {0} before {1}.'.format(stateName, func.__name__))
+                    return check
+            func(self, *args, **kwargs)
+
+        return check
+
+    return decorator
+
+
 class PeerNGA:
     def __init__(self, driverPath: str) -> NoReturn:
         options = webdriver.ChromeOptions()
@@ -42,23 +58,7 @@ class PeerNGA:
     def close(self) -> NoReturn:
         self.browser.quit()
 
-    @staticmethod
-    def __checkStates(level: int):
-        def decorator(func):
-            def check(self, *args, **kwargs):
-                stateNames = list(self.states.keys())
-                for i in range(level):
-                    stateName = stateNames[i]
-                    if not self.states[stateName]:
-                        print('Please {0} before {1}.'.format(stateName, func.__name__))
-                        return check
-                func(self, *args, **kwargs)
-
-            return check
-
-        return decorator
-
-    @__checkStates(1)
+    @_checkStates(1)
     def enterDB(self, label: str):
         DBdict = {
             'NGA West2': 1,
@@ -69,7 +69,7 @@ class PeerNGA:
         WebDriverWait(self.browser, 10).until(lambda x: x.find_element(By.NAME, "search[search_nga_number]"))
         self.states['enter database'] = True
 
-    @__checkStates(2)
+    @_checkStates(2)
     def search(self, settings: dict = None):
         if not settings:
             self.__clickBtnSearch()
@@ -83,7 +83,7 @@ class PeerNGA:
         if self.__clickBtnSearch():
             self.states['search records'] = True
 
-    @__checkStates(3)
+    @_checkStates(3)
     def download(self, saveDir: str):
         self.browser.execute_script('getSelectedResult(true)')
         alert = self.browser.switch_to.alert
