@@ -114,7 +114,7 @@ class PeerNGA:
         return True
 
     @staticmethod
-    def __getElemName(label: str) -> str | bool:
+    def __getElemName(label: str) -> str or bool:
         nameDict = {
             'RSNs': 'search[search_nga_number]',
             'Event Name': 'search[search_eq_name]',
@@ -135,7 +135,7 @@ class PeerNGA:
         return False
 
     @staticmethod
-    def __interceptor(request: Request) -> Request | bool:
+    def __interceptor(request: Request) -> Request or bool:
         if request.url.endswith('.zip'):
             request.abort()
             return request
