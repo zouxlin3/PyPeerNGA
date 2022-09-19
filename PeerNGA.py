@@ -71,9 +71,7 @@ class PeerNGA:
 
     @_checkStates(2)
     def search(self, settings: dict = None):
-        if not settings:
-            self.__clickBtnSearch()
-        else:
+        if settings:
             for label in settings:
                 elemName = self.__getElemName(label)
                 if elemName:
@@ -82,6 +80,8 @@ class PeerNGA:
 
         if self.__clickBtnSearch():
             self.states['search records'] = True
+            return True
+        return False
 
     @_checkStates(3)
     def download(self, saveDir: str):
