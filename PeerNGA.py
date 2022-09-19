@@ -16,7 +16,7 @@ def _checkStates(level: int):
                 if not self.states[stateName]:
                     print('Please {0} before {1}.'.format(stateName, func.__name__))
                     return check
-            func(self, *args, **kwargs)
+            return func(self, *args, **kwargs)
 
         return check
 
